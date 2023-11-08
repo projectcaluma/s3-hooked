@@ -1,4 +1,4 @@
-name: Publish version tagged image
+name: Publish dev image from main
 
 on:
   # Run build for any PRs - we won't push in those however
