@@ -1,0 +1,64 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * 0"
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    env:
+      ENIVRONMENT: development
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # This is needed for gitlint to work
+          fetch-depth: 0
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "poetry"
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run black
+        run: poetry run black --check .
+
+      - name: Run ruff
+        run: poetry run ruff check proxy
+
+  docker-tests:
+    name: Docker tests
+    needs: [lint]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build the project
+        run: docker compose up -d --build
+
+      - name: Run tests
+        run: docker compose exec -T proxy poetry run pytest --no-cov-on-fail --cov -vv
