@@ -1,0 +1,15 @@
+repos:
+- repo: local 
+  hooks:
+    - id: black
+      name: Black
+      entry: /bin/sh -c 'cd ./proxy/ && black .'
+      language: system
+      types: [python]
+    - id: ruff
+      stages: [commit]
+      name: Ruff
+      types: [python]
+      language: system
+      entry: /bin/sh -c 'cd ./proxy/ && ruff check . --config ../pyproject.toml --show-source --fix'
+

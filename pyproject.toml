@@ -1,0 +1,113 @@
+[tool.poetry]
+name = "s3-hooked"
+version = "0.1.0"
+description = "s3 proxy written in Python/aiohttp that supports flexible integrations via hooks to achieve things like symmetric encryption (built-in), validations, virus scanning, webhooks etc."
+authors = ["Adfinis AG"]
+readme = "README.md"
+packages = [
+    { include = "proxy" }
+]
+
+[tool.pytest.ini_options]
+addopts = "--pdbcls=IPython.terminal.debugger:Pdb -s"
+asyncio_mode = "auto"
+testpaths = ["proxy"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiohttp = "^3.8.5"
+cryptography = "^41.0.3"
+pydantic = {extras = ["dotenv"], version = "^2.3.0"}
+pydantic-settings = "^2.0.3"
+yarl = "^1.9.2"
+requests = "^2.31.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.2"
+pytest-aiohttp = "^1.0.5"
+black = "^23.9.1"
+pytest-asyncio = "^0.21.1"
+aiohttp-debugtoolbar = "^0.6.0"
+aiohttp-devtools = "^1.1"
+pytest-mock = "^3.11.1"
+requests-mock = "^1.11.0"
+aioresponses = "^0.7.4"
+debugpy = "^1.8.0"
+ruff = "^0.0.284"
+pytest-lazy-fixture = "^0.6.3"
+pytest-cov = "^4.1.0"
+ipdb = "^0.13.13"
+ptipython = "^1.0.1"
+pdbpp = "^0.10.3"
+
+[tool.poetry.group.addons]
+optional = true
+
+[tool.poetry.group.addons.dependencies]
+clamd = "^1.0.2"
+python-magic = "^0.4.27"
+
+[tool.ruff]
+exclude = [
+    "migrations",
+]
+
+ignore = [
+    "A003",     # `flake8-builtins` - Class attribute {name} is shadowing a Python builtin
+    "ANN",      # `flake8-annotations`
+    "ARG",      # `flake8-unused-arguments`
+    "D100",     # Missing docstring in public module
+    "D101",     # Missing docstring in public class
+    "D102",     # Missing docstring in public method
+    "D103",     # Missing docstring in public function
+    "D104",     # Missing docstring in public package
+    "D105",     # Missing docstring in magic method
+    "D106",     # Missing docstring in public nested class
+    "D107",     # Missing docstring in __init__
+    "D202",     # No blank lines allowed after function docstring (found {num_lines})
+    "D203",     # 1 blank line required before class docstring
+    "D212",     # Multi-line docstring summary should start at the first line
+    "DJ001",    #  flake8-django` - Avoid using null=True on string-based fields
+    "E501",     # Line too long ({width} > {limit} characters) - managed by black
+    "ERA001",   # eradicate - Found commented-out code
+    "FA100",    # `future-rewritable-type-annotation` - obsolete in python >= 3.9
+    "FBT002",   # `flake8-boolean-trap` - Boolean default positional argument in function definition
+    "FBT003",   # Boolean positional value in function call
+    "FIX",      # `flake8-fixme`
+    "N818",     # Exception name {name} should be named with an Error suffix - https://github.com/astral-sh/ruff/issues/5367
+    "PERF203",  # `try-except-in-loop` - obsolete in python >= 3.11
+    "PGH005",   # doesn't work correctly with `requests-mock`
+    "PLR0913",  # Too many arguments to function call
+    "PLR2004",  # Magic value used in comparison, consider replacing {value} with a constant variable
+    "PT006",    # Wrong name(s) type in @pytest.mark.parametrize, expected {expected}
+    "PT017",    # Found assertion on exception {name} in except block, use pytest.raises() instead
+    "PT012",    # `pytest.raises()` block should contain a single simple statement
+    "PLW2901",  # `for` loop variable `search_term` overwritten by assignment target
+    "RET502",   # Do not implicitly return None in function able to return non-None value
+    "RET503",   # Missing explicit return at the end of function able to return non-None value
+    "RUF001",   # ambiguous-unicode-character-string
+    "RUF012",   # Mutable class attributes should be annotated with typing.ClassVar
+    "S101",     # Use of assert detected
+    "TD002",    # missing-todo-author
+    "TD003",    # missing-todo-link
+    "TID252",   # banned-module-level-imports
+]
+line-length = 88
+select = ["ALL"]
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.ruff.isort]
+known-first-party = ["mysagw", "caluma"]
+combine-as-imports = true
+
+[tool.ruff.flake8-pytest-style]
+fixture-parentheses = false
+
+[tool.ruff.per-file-ignores]
+"manage.py" = ["INP001"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

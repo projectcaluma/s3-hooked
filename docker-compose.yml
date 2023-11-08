@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  proxy:
+    image: ghcr.io/projectcaluma/s3-hooked:v0.1.0
+    environment:
+      - PROXY_SECRET
+      - PROXY_OBJECT_STORE_HOST=${PROXY_OBJECT_STORE_HOST:-minio}
+      - PROXY_OBJECT_STORE_PORT=${PROXY_OBJECT_STORE_PORT:-9000}
+      - PROXY_OBJECT_STORE_SSL_ENABLED=${PROXY_OJECT_STORE_SSL_ENABLED:-true}
+    ports:
+      - "8080:8000"
+  minio:
+    image: minio/minio:RELEASE.2023-09-16T01-01-47Z
+    volumes:
+      - minio_data:/data
+    command: server data
+
+volumes:
+  minio_data:
+

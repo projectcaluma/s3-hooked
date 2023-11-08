@@ -1,0 +1,36 @@
+version: '3.4'
+  
+services:
+  proxy:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      args:
+        - INSTALL_ADDONS=true
+      target: dev_image
+      cache_from:
+        - ghcr.io/projectcaluma/s3-hooked:latest
+    environment:
+      - PROXY_SECRET=dqxNYNhp9nfnYQjpUE2dzGnXBHem3shYd0lIaNKuyomem6SB
+      - PROXY_ENVIRONMENT=${ENVIRONMENT:-development}
+      - MINIO_ACCESS_KEY=minio-dev-key
+      - MINIO_SECRET_KEY=5hA9J2SW5syVch0u5oJtVwUJokR7loHHYh1rMV8V
+      - PROXY_OBJECT_STORE_HOST=minio
+      - PROXY_OBJECT_STORE_PORT=9000
+      - PROXY_OBJECT_STORE_SSL_ENABLED=false
+      - PYTHONBREAKPOINT=ipdb.set_trace
+    volumes:
+      - .:/app/
+    ports:
+     - "8080:8000"
+    command: adev runserver proxy
+
+  minio:
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=minio-admin
+      - MINIO_BROWSER=on
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    command: server data --console-address :9090
