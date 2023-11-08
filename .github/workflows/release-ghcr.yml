@@ -1,4 +1,4 @@
-name: Container image
+name: Publish version tagged image
 
 on:
   release:
@@ -6,11 +6,6 @@ on:
 
   # Run build for any PRs - we won't push in those however
   pull_request:
-    branches:
-      - main
-
-  # Publish `main` as Docker `dev` image.
-  push:
     branches:
       - main
 
