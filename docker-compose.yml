@@ -2,11 +2,10 @@ version: '3.4'
 
 services:
   proxy:
-    image: ghcr.io/projectcaluma/s3-hooked:v0.1.0
+    image: ghcr.io/projectcaluma/s3-hooked:latest
     environment:
       - PROXY_SECRET
       - PROXY_OBJECT_STORE_HOST=${PROXY_OBJECT_STORE_HOST:-minio}
-      - PROXY_OBJECT_STORE_PORT=${PROXY_OBJECT_STORE_PORT:-9000}
       - PROXY_OBJECT_STORE_SSL_ENABLED=${PROXY_OJECT_STORE_SSL_ENABLED:-true}
     ports:
       - "8080:8000"
