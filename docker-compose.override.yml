@@ -2,6 +2,7 @@ version: '3.4'
   
 services:
   proxy:
+    image: ghcr.io/projectcaluma/s3-hooked:dev
     build:
       dockerfile: Dockerfile
       context: .

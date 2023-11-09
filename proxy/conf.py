@@ -1,4 +1,4 @@
-from typing import List, NamedTuple
+from typing import List, NamedTuple, Optional
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="PROXY_")
     OBJECT_STORE_HOST: str = "minio"
-    OBJECT_STORE_PORT: int = 9000
+    OBJECT_STORE_PORT: Optional[int] = None
     OBJECT_STORE_SSL_ENABLED: bool = True
     SECRET: str
     LOG_LEVEL: str = "info"
